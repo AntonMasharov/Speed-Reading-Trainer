@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Speed Reading Trainer</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			text-align: center;
+			margin: 20px;
+		}
+
+		#grid {
+			display: grid;
+			gap: 0;
+			margin: 20px auto;
+			border: 2px solid #000;
+			background-color: #ccc;
+			width: fit-content;
+		}
+
+		.cell {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			border: 1px solid #000;
+			background-color: #f0f0f0;
+			width: 70px;
+			height: 70px;
+			font-size: 24px;
+			cursor: pointer;
+			transition: background-color 0.2s, transform 0.2s;
+		}
+
+		.cell.correct {
+			background-color: #cfc;
+			transform: scale(0.9);
+		}
+
+		.cell.incorrect {
+			background-color: #f88;
+			transform: scale(0.9);
+		}
+
+		#timer {
+			font-size: 24px;
+			margin: 20px 0;
+		}
+
+		#restartButton {
+			display: block;
+			margin: 20px auto;
+			padding: 15px 30px;
+			font-size: 20px;
+			color: white;
+			background-color: #007BFF;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+		}
+
+		#restartButton:hover {
+			background-color: #0056b3;
+		}
+
+		#sizeSelector {
+			margin: 20px 0;
+			font-size: 18px;
+		}
+	</style>
+</head>
+
+<body>
+	<h1>Speed Reading Trainer</h1>
+	<p>Find and click on the numbers in order as quickly as possible!</p>
+	<label>
+		<input type="checkbox" id="disappearToggle" checked> Numbers disappear on click
+	</label>
+	<div id="sizeSelector">
+		<label for="gridSize">Select grid size: </label>
+		<select id="gridSize">
+			<option value="3">3x3</option>
+			<option value="4">4x4</option>
+			<option value="5" selected>5x5</option>
+			<option value="6">6x6</option>
+			<option value="7">7x7</option>
+		</select>
+	</div>
+	<div id="timer">Time: 0.00s</div>
+	<div id="grid"></div>
+	<button id="restartButton">Restart</button>
+
+	<script>
+		let gridSize = 5;
+		let currentNumber = 1;
+		let startTime;
+		let timerInterval;
+		const timerElement = document.getElementById('timer');
+		const gridElement = document.getElementById('grid');
+		const disappearToggle = document.getElementById('disappearToggle');
+		const restartButton = document.getElementById('restartButton');
+		const gridSizeSelector = document.getElementById('gridSize');
+
+		// Generate the grid
+		function generateGrid(size) {
+			gridElement.innerHTML = ''; // Clear the grid
+			const numbers = Array.from({ length: size * size }, (_, i) => i + 1);
+			numbers.sort(() => Math.random() - 0.5);
+
+			gridElement.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
+			gridElement.style.gridTemplateRows = `repeat(${size}, 1fr)`;
+
+			numbers.forEach(number => {
+				const cell = document.createElement('div');
+				cell.classList.add('cell');
+				cell.textContent = number;
+				cell.addEventListener('click', () => handleCellClick(number, cell));
+				gridElement.appendChild(cell);
+			});
+		}
+
+		// Handle cell click
+		function handleCellClick(number, cell) {
+			if (number === currentNumber) {
+				if (currentNumber === 1) {
+					startTimer();
+				}
+				if (disappearToggle.checked) {
+					cell.textContent = '';
+				} else {
+					cell.classList.add('correct');
+					setTimeout(() => cell.classList.remove('correct'), 200);
+				}
+				if (number === gridSize * gridSize) {
+					stopTimer();
+					alert(`Well done! Your time: ${(Date.now() - startTime) / 1000}s`);
+				}
+				currentNumber++;
+			} else {
+				cell.classList.add('incorrect');
+				setTimeout(() => cell.classList.remove('incorrect'), 200);
+			}
+		}
+
+		// Start the timer
+		function startTimer() {
+			startTime = Date.now();
+			timerInterval = setInterval(() => {
+				const elapsedTime = ((Date.now() - startTime) / 1000).toFixed(2);
+				timerElement.textContent = `Time: ${elapsedTime}s`;
+			}, 10);
+		}
+
+		// Stop the timer
+		function stopTimer() {
+			clearInterval(timerInterval);
+		}
+
+		// Restart the game
+		function restartGame() {
+			stopTimer();
+			currentNumber = 1;
+			timerElement.textContent = 'Time: 0.00s';
+			gridSize = parseInt(gridSizeSelector.value, 10);
+			generateGrid(gridSize);
+		}
+
+		// Add event listeners
+		restartButton.addEventListener('click', restartGame);
+		gridSizeSelector.addEventListener('change', restartGame);
+
+		// Initialize the game
+		generateGrid(gridSize);
+	</script>
+</body>
+
+</html>
