@@ -1,0 +1,92 @@
+body {
+	font-family: Arial, sans-serif;
+	text-align: center;
+	margin: 20px;
+}
+
+#grid {
+	display: grid;
+	gap: 0;
+	margin: 20px auto;
+	border: 2px solid #000;
+	background-color: #ccc;
+	width: fit-content;
+	max-width: 100%;
+}
+
+.cell {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	border: 1px solid #000;
+	background-color: #f0f0f0;
+	width: calc(100vw / 7);
+	height: calc(100vw / 7);
+	max-width: 70px;
+	max-height: 70px;
+	font-size: 22px;
+	/* Fixed font size for better consistency */
+	cursor: pointer;
+	transition: background-color 0.2s, transform 0.2s;
+}
+
+.cell.correct {
+	background-color: #cfc;
+	transform: scale(0.9);
+}
+
+.cell.incorrect {
+	background-color: #f88;
+	transform: scale(0.9);
+}
+
+#timer {
+	font-size: 24px;
+	margin: 20px 0;
+}
+
+#restartButton {
+	display: block;
+	margin: 20px auto;
+	padding: 15px 30px;
+	font-size: 20px;
+	color: white;
+	background-color: #007BFF;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	width: calc(80vw);
+	max-width: 300px;
+}
+
+#restartButton:hover {
+	background-color: #0056b3;
+}
+
+#sizeSelector {
+	margin: 20px 0;
+	font-size: 18px;
+}
+
+@media (max-width: 768px) {
+	#grid {
+		border-width: 1px;
+	}
+
+	.cell {
+		font-size: 22px;
+		/* Maintain consistent size */
+	}
+
+	#timer {
+		font-size: 20px;
+	}
+
+	#restartButton {
+		font-size: 18px;
+	}
+
+	#sizeSelector {
+		font-size: 16px;
+	}
+}
