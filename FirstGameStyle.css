@@ -6,28 +6,31 @@ body {
 
 #grid {
 	display: grid;
-	gap: 0;
 	margin: 20px auto;
+	gap: 5px;
+	/* Пространство между ячейками */
 	border: 2px solid #000;
 	background-color: #ccc;
-	width: fit-content;
-	max-width: 100%;
+	max-width: 90vw;
+	/* Максимальная ширина сетки на экране */
+	max-height: 90vw;
+	/* Максимальная высота сетки на экране */
 }
 
 .cell {
 	display: flex;
 	justify-content: center;
 	align-items: center;
-	border: 1px solid #000;
+	border: 0px solid #000;
 	background-color: #f0f0f0;
-	width: calc(100vw / 7);
-	height: calc(100vw / 7);
-	max-width: 70px;
-	max-height: 70px;
-	font-size: 22px;
-	/* Fixed font size for better consistency */
+	font-size: calc(1.5vw + 8px);
+	/* Шрифт адаптируется к размеру ячейки */
 	cursor: pointer;
 	transition: background-color 0.2s, transform 0.2s;
+	aspect-ratio: 1;
+	/* Ячейки всегда квадратные */
+	width: 100%;
+	/* Ширина управляется через grid */
 }
 
 .cell.correct {
@@ -39,6 +42,7 @@ body {
 	background-color: #f88;
 	transform: scale(0.9);
 }
+
 
 #timer {
 	font-size: 24px;
@@ -69,13 +73,9 @@ body {
 }
 
 @media (max-width: 768px) {
-	#grid {
-		border-width: 1px;
-	}
-
 	.cell {
-		font-size: 22px;
-		/* Maintain consistent size */
+		font-size: 4vw;
+		/* Smaller font size for small screens */
 	}
 
 	#timer {

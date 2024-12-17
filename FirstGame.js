@@ -10,12 +10,14 @@ const gridSizeSelector = document.getElementById('gridSize');
 
 // Generate the grid
 function generateGrid(size) {
-	gridElement.innerHTML = ''; // Clear the grid
+	gridElement.innerHTML = ''; // Очистка предыдущей сетки
+
 	const numbers = Array.from({ length: size * size }, (_, i) => i + 1);
 	numbers.sort(() => Math.random() - 0.5);
 
+	// Настройка сетки под новый размер
 	gridElement.style.gridTemplateColumns = `repeat(${size}, 1fr)`;
-	gridElement.style.gridTemplateRows = `repeat(${size}, 1fr)`;
+	gridElement.style.gridTemplateRows = `repeat(${size}, fr)`;
 
 	numbers.forEach(number => {
 		const cell = document.createElement('div');
@@ -25,6 +27,8 @@ function generateGrid(size) {
 		gridElement.appendChild(cell);
 	});
 }
+
+
 
 // Handle cell click
 function handleCellClick(number, cell) {
